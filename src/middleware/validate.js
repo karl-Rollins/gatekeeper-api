@@ -8,6 +8,19 @@ function formatZodIssues(zodError) {
   }));
 }
 
+function assignParsed(req, key, value) {
+  try {
+    req[key] = value;
+  } catch {
+    Object.defineProperty(req, key, {
+      value,
+      writable: true,
+      configurable: true,
+      enumerable: true,
+    });
+  }
+}
+
 export function validate({ params, query, body } = {}) {
   return (req, _res, next) => {
     try {
@@ -22,7 +35,7 @@ export function validate({ params, query, body } = {}) {
             ),
           );
         }
-        req.params = parsed.data;
+        assignParsed(req, "params", parsed.data);
       }
 
       if (query) {
@@ -36,7 +49,7 @@ export function validate({ params, query, body } = {}) {
             ),
           );
         }
-        req.query = parsed.data;
+        assignParsed(req, "query", parsed.data);
       }
 
       if (body) {
@@ -50,7 +63,7 @@ export function validate({ params, query, body } = {}) {
             ),
           );
         }
-        req.body = parsed.data;
+        assignParsed(req, "body", parsed.data);
       }
 
       return next();
