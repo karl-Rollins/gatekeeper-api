@@ -4,8 +4,11 @@ import { logger } from '../utils/logger.js';
 
 const { Pool } = pg;
 
+const connectionString =
+  config.nodeEnv === 'test' ? config.databaseUrlTest : config.databaseUrl;
+
 export const pool = new Pool({
-  connectionString: config.databaseUrl,
+  connectionString,
   max: config.dbPoolMax,
 });
 
