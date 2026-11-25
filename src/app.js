@@ -1,12 +1,14 @@
 import express from 'express';
 import { notFoundHandler } from './middleware/notFound.js';
 import { errorHandler } from './middleware/errorHandler.js';
+import healthRoutes from './routes/health.routes.js';
 
 export function createApp() {
   const app = express();
 
   app.use(express.json({ limit: '100kb' }));
 
+  app.use(healthRoutes);
 
   app.use(notFoundHandler);
   app.use(errorHandler);
