@@ -63,3 +63,18 @@ export async function seedEvent({
 export async function closeTestPool() {
   await pool.end();
 }
+
+export async function seedBooking({
+  eventId,
+  customerId,
+  quantity = 1,
+  status = 'confirmed',
+} = {}) {
+  const res = await query(
+    `INSERT INTO bookings (event_id, customer_id, quantity, status)
+     VALUES ($1, $2, $3, $4)
+     RETURNING id, event_id, customer_id, quantity, status, booked_at`,
+    [eventId, customerId, quantity, status]
+  );
+  return res.rows[0];
+}
