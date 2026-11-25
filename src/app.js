@@ -3,6 +3,7 @@ import { notFoundHandler } from './middleware/notFound.js';
 import { errorHandler } from './middleware/errorHandler.js';
 import healthRoutes from './routes/health.routes.js';
 import eventsRoutes from './routes/events.routes.js';
+import bookingsRoutes from './routes/bookings.routes.js';
 
 export function createApp() {
   const app = express();
@@ -11,6 +12,7 @@ export function createApp() {
 
   app.use(healthRoutes);
   app.use('/events', eventsRoutes);
+  app.use('/bookings', bookingsRoutes);
 
   app.use(notFoundHandler);
   app.use(errorHandler);
