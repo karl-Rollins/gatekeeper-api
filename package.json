@@ -4,10 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "node --test",
-    "start": "node src/server.js",
-    "dev": "node --watch src/server.js",
-    "lint": "eslint ."
+    "test": "NODE_ENV=test node --env-file=.env --test --test-concurrency=1",
+    "start": "node --env-file=.env src/server.js",
+    "dev": "node --env-file=.env --watch src/server.js",
+    "lint": "eslint .",
+    "db:setup": "node --env-file=.env -e \"import { execFileSync } from 'node:child_process'; execFileSync('psql', [process.env.DATABASE_URL, '-v', 'ON_ERROR_STOP=1', '-f', 'db/schema.sql'], { stdio: 'inherit' }); execFileSync('psql', [process.env.DATABASE_URL, '-v', 'ON_ERROR_STOP=1', '-f', 'db/seed.sql'], { stdio: 'inherit' });\"",
+    "db:setup:test": "node --env-file=.env -e \"import { execFileSync } from 'node:child_process'; execFileSync('psql', [process.env.DATABASE_URL_TEST, '-v', 'ON_ERROR_STOP=1', '-f', 'db/schema.sql'], { stdio: 'inherit' });\""
   },
   "keywords": [],
   "author": "",
